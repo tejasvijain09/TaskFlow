@@ -6,49 +6,47 @@
 
 **Speakers & Presentation Structure:**
 - **Tejasvi** (Reg No: 12315197) — *First 5 Minutes (Slides 1 to 5: Architecture, Security, Authentication & Cloud DB)*
-- **Arpan Dey** (Reg No: 12305886) — *Next 5 Minutes (Slides 6 to 9: Task Engine, Indexing, CRUD & Filtering)*
-
-> [!NOTE]
-> The presentation slide deck (`TaskFlow_Presentation.pptx`) is designed as a **cohesive, professional team presentation**. It does **not** clutter the screen with internal speaker badges, names, or countdowns in front of your teacher and classmates.  
-> The 5-minute split is maintained seamlessly through the speaking transitions below.
+- **Arpan Dey** (Reg No: 12305886) — *Next 5 Minutes (Slides 6 to 10: Task Engine, Indexing, CRUD, Analytics, Swagger & Live Demo)*
 
 ---
 
 ## 📂 Slide Deck File
 The updated PowerPoint presentation is saved in your project root:  
 📄 **[`TaskFlow_Presentation.pptx`](file:///Users/tejasvi/Documents/Projects/College%20Projects/TaskFlow/TaskFlow_Presentation.pptx)**  
-*(Open in **Microsoft PowerPoint**, **Apple Keynote**, or drag into **Google Slides**).*
+*(Optimized for classroom projectors with large, high-contrast typography: 32–46pt titles and 15–17pt bullet text).*
 
 ---
 
-## ⏱️ Slide Overview & Sequence
+## ⏱️ Slide Overview & Sequence (10 Slides Total)
 
-| Slide | Topic | Presenter | Purpose |
+| Slide | Topic | Presenter | Key Focus for Projector |
 | :---: | :--- | :---: | :--- |
-| **Slide 1** | **TaskFlow Project Title & Team** | Tejasvi & Arpan | Project introduction, team details, supervisor info. |
+| **Slide 1** | **TaskFlow Project Title & Team** | Both | Project introduction, team details, supervisor info. |
 | **Slide 2** | **System Architecture & Stack** | Tejasvi | 3-tier MERN stack overview (React, Express, Atlas). |
 | **Slide 3** | **User Authentication & Security** | Tejasvi | Input sanitization, bcrypt 10-round hashing, role locks. |
 | **Slide 4** | **JWT Authorization & Route Guarding** | Tejasvi | Stateless tokens, Bearer middleware, `ProtectedRoute`. |
 | **Slide 5** | **Cloud Database & Live Sync** | Tejasvi | Atlas 3-node replica set, `process.env`, live DB watcher. |
 | **Slide 6** | **Task Modeling & Compound Indexing** | Arpan Dey | Schema design, enums, $O(\log N)$ compound indexes. |
 | **Slide 7** | **Task CRUD & Tenant Isolation** | Arpan Dey | Full CRUD endpoints, `user: req.user._id` data isolation. |
-| **Slide 8** | **Filtering, Sorting & Pagination** | Arpan Dey | Dynamic multi-filters, whitelisted sorting, server-side `.skip()/.limit()`. |
-| **Slide 9** | **Live Demonstration & Summary** | Both | 4-step live walkthrough sequence, GitHub repository, Q&A. |
+| **Slide 8** | **Filtering, Sorting & Pagination** | Arpan Dey | Dynamic multi-filters, whitelisted sorting, server `.skip()/.limit()`. |
+| **Slide 9** | **Analytics, Real-Time & Admin** | Arpan Dey | MongoDB `$group` aggregation, Socket.IO, Swagger docs, Admin. |
+| **Slide 10** | **Live Demonstration & Summary** | Both | 4-step live walkthrough sequence, GitHub repository, Q&A. |
 
 ---
 
 ## 📸 Proof-of-Work Screenshots Checklist
 
-Each technical slide (Slides 3 to 8) contains a dedicated screenshot frame on the right side. Use `Cmd + Shift + 4` on macOS to capture and drop these in:
+Each technical slide (Slides 3 to 9) contains a dedicated screenshot frame on the right side. Use `Cmd + Shift + 4` on macOS to capture and drop these in:
 
-| Slide | Screenshot | Where to Capture |
+| Slide | Screenshot Name | Where to Capture on Your Mac |
 | :---: | :--- | :--- |
-| **Slide 3** | **Auth UI** | Open `http://localhost:5173/login` in your browser. Capture the Login / Register form card. |
-| **Slide 4** | **JWT Token** | In browser, press `Cmd + Option + I` ➔ **Application** tab ➔ **Local Storage** ➔ `http://localhost:5173`. Capture the row with the `token` key. |
-| **Slide 5** | **Cloud Atlas & Watcher** | Open [cloud.mongodb.com](https://cloud.mongodb.com) cluster **`tms`**, or take a screenshot of the terminal running `npm run db:watch`. |
-| **Slide 6** | **Task Document Schema** | In MongoDB Atlas Collections, capture a task document showing fields: `title`, `status`, `priority`, `dueDate`, `user` (ObjectId). |
+| **Slide 3** | **Auth UI** | Open `http://localhost:5173/login`. Capture the Login / Register form card. |
+| **Slide 4** | **JWT Token** | In browser, press `Cmd + Option + I` ➔ **Application** tab ➔ **Local Storage** ➔ `http://localhost:5173`. Capture the row showing key `token`. |
+| **Slide 5** | **Cloud Atlas & Watcher** | Open [cloud.mongodb.com](https://cloud.mongodb.com) cluster **`tms`**, or take a screenshot of your terminal running `npm run db:watch`. |
+| **Slide 6** | **Task Schema Document** | In MongoDB Atlas Collections, capture a task document showing fields: `title`, `status`, `priority`, `dueDate`, `user` (ObjectId). |
 | **Slide 7** | **Tasks Grid & Modal** | Open `http://localhost:5173/tasks`. Click **➕ Add New Task** to open the modal dialog over the task cards. |
 | **Slide 8** | **Filter Toolbar & Pagination** | On `http://localhost:5173/tasks`, select filters (`Status: In Progress`, `Priority: High`) showing the active dropdowns and bottom page buttons. |
+| **Slide 9** | **Dashboard Stats & Swagger** | Open `http://localhost:5173/dashboard` showing the 4 KPI cards, or open `http://localhost:5001/api-docs` showing Swagger UI. |
 
 ---
 
@@ -58,7 +56,7 @@ Each technical slide (Slides 3 to 8) contains a dedicated screenshot frame on th
 
 #### Slide 1: Title Slide (0:00 – 0:45)
 > *"Good morning, Sir. Today Arpan and I are presenting **TaskFlow**, our full-stack Task Management System developed for CSF402 using the MERN stack.  
-> In our presentation, I will cover our core system architecture, authentication security, and cloud database infrastructure. Then Arpan will walk through our task data modeling, indexing, CRUD operations, and filtering engine."*
+> In our presentation, I will cover our core system architecture, authentication security, and cloud database infrastructure. Then Arpan will walk through our task data modeling, indexing, CRUD operations, analytics, and live demonstration."*
 
 #### Slide 2: System Architecture & Stack (0:45 – 1:45)
 > *"TaskFlow is architected across three distinct tiers:  
@@ -86,38 +84,45 @@ Each technical slide (Slides 3 to 8) contains a dedicated screenshot frame on th
 > - Connection strings are entirely dynamic through `process.env.MONGO_URI`, ensuring safe configuration across local and cloud environments.  
 > - To demonstrate live database interaction, I created a custom terminal monitor (`npm run db:watch`) that streams real-time database modifications as users interact with the app.  
 > - We also prepared deployment blueprints for Render and Vercel.  
-> Now, Arpan will present our task data engine and operations."*
+> Now, Arpan will present our task data engine, operations, and extended platform features."*
 
 ---
 
 ### 🟢 PART 2: ARPAN DEY (5:00 – 10:00)
 
-#### Slide 6: Task Data Modeling & Compound Indexing (5:00 – 6:15)
+#### Slide 6: Task Data Modeling & Compound Indexing (5:00 – 6:05)
 > *"Thank you, Tejasvi. I will now present our task data engine and user features.  
 > - In `models/Task.js`, each task establishes referential integrity by storing `user: { type: ObjectId, ref: 'User', required: true }`. This links every task directly to its creator.  
 > - We enforce strict schema enums for task status (`Pending`, `In Progress`, `Completed`) and priority (`Low`, `Medium`, `High`), with automatic audit trails via `{ timestamps: true }`.  
 > - For database performance, we implemented **compound indexes** on `{ user: 1, status: 1 }` and `{ user: 1, priority: 1 }`.  
 > - Because our application frequently filters tasks by user and status together, these indexes avoid costly full collection scans, reducing query execution from $O(N)$ to $O(\log N)$ via B-Tree index lookups."*
 
-#### Slide 7: Task CRUD & Tenant Isolation (6:15 – 7:30)
+#### Slide 7: Task CRUD & Tenant Isolation (6:05 – 7:05)
 > *"Our core task controller implements complete RESTful CRUD operations:  
 > - **CREATE:** Validates task title and due date, associates the authenticated `user: req.user._id`, and returns HTTP status 201.  
 > - **READ & ISOLATION:** Queries are strictly scoped to the logged-in user: `const query = { user: req.user._id }`. This guarantees strict tenant isolation—no user can view or tamper with another user's private data.  
 > - **UPDATE & DELETE:** The controller verifies that the task ID is a valid 24-character hexadecimal ObjectId and confirms ownership before allowing edits or document removal.  
 > - On the frontend, React state updates immediately so changes reflect dynamically without reloading the page."*
 
-#### Slide 8: Filtering, Sorting & Server Pagination (7:30 – 8:45)
+#### Slide 8: Filtering, Sorting & Server Pagination (7:05 – 8:00)
 > *"To provide a clean user experience as task volume grows:  
 > - **Multi-Parameter Filtering:** Users can filter by status and priority simultaneously (`GET /api/tasks?status=Pending&priority=High`).  
 > - **Whitelisted Dynamic Sorting:** To prevent query injection, sort fields are checked against an allowed whitelist (`dueDate`, `createdAt`, `title`) with support for ascending and descending order.  
 > - **Server-Side Pagination:** Instead of transferring all tasks across the network, MongoDB's `.skip()` and `.limit()` methods retrieve only the requested page slice, keeping response times fast and payloads lightweight."*
 
-#### Slide 9: Live Demonstration & Q&A (8:45 – 10:00)
+#### Slide 9: Analytics, Real-Time & Administration (8:00 – 9:00)
+> *"Beyond basic task operations, TaskFlow incorporates full platform capabilities:  
+> - **Aggregation Pipeline:** Our dashboard computes live task metrics (Total, Pending, In Progress, Completed) dynamically using MongoDB's `$match` and `$group` pipeline stages.  
+> - **Real-Time Socket.IO:** We integrated bidirectional WebSocket rooms pushing instant alert toasts across active browser tabs whenever a task status changes.  
+> - **Interactive Swagger UI:** Available at `/api-docs`, allowing developers to inspect and test all endpoints with JWT Bearer authentication directly in the browser.  
+> - **Admin Control Panel:** A dedicated view protected by `requireAdmin` middleware allowing administrators to monitor platform users and moderate tasks."*
+
+#### Slide 10: Live Demonstration & Summary (9:00 – 10:00)
 > *"To conclude our demonstration, here is the sequence of our live walkthrough:  
 > 1. We will show user login and inspect the JWT token stored in the browser.  
 > 2. We will create a task via our modal interface and update its status.  
 > 3. We will filter tasks by status and priority and demonstrate pagination.  
-> 4. We will show the live document updating immediately in MongoDB Atlas Cloud.  
+> 4. We will show the live document updating immediately in MongoDB Atlas Cloud and trigger a real-time Socket.IO alert.  
 > 
 > Our complete source code is maintained on GitHub at `github.com/tejasvijain09/TaskFlow`.  
 > Thank you, Sir. We are now ready for your questions."*
@@ -132,11 +137,11 @@ Each technical slide (Slides 3 to 8) contains a dedicated screenshot frame on th
 2. **"What is the advantage of compound indexes in MongoDB?"**  
    *Answer:* A compound index on `{ user: 1, status: 1 }` allows MongoDB to evaluate both the user ownership and status filter in a single indexed B-Tree traversal in $O(\log N)$ time, avoiding an expensive scan of all documents in the collection.
 
-3. **"Why use JWT instead of traditional session cookies?"**  
-   *Answer:* JWT is stateless. The user's identity is digitally signed inside the token, so the backend server doesn't need to maintain or query an in-memory session store on every request, making it lightweight and horizontally scalable.
+3. **"How does the MongoDB Aggregation Pipeline work on your Dashboard?"**  
+   *Answer:* In `dashboardController.js`, we use `$match: { user: req.user._id }` to filter the user's tasks, followed by `$group: { _id: '$status', count: { $sum: 1 } }`. This computes task counts directly in the database engine in a single query.
 
-4. **"How do you ensure one user cannot delete another user's task?"**  
-   *Answer:* In `taskController.js`, before deleting, the backend fetches the task and checks `if (task.user.toString() !== req.user._id.toString())`. If they don't match, the server rejects the request with HTTP status 403 Forbidden.
+4. **"How does Socket.IO handle real-time notifications?"**  
+   *Answer:* When a client connects, they join a private room keyed by their user ID (`socket.join(user._id)`). When a task status updates in `taskController.js`, the server emits a `'taskUpdated'` event to that specific user room, displaying an instant notification toast.
 
 5. **"Why is pagination done on the server instead of the client?"**  
    *Answer:* Client-side pagination would require downloading thousands of records over the network on every load. Server-side pagination with `.skip()` and `.limit()` transfers only the exact 6 or 10 tasks needed for the active page, saving bandwidth and memory.
