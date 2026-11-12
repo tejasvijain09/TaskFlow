@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: taskflow-backend
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        value: mongodb+srv://tejasvijain09_db_user:ieAIpnuFLC5397WR@tms.l7vt8kf.mongodb.net/taskflow?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: taskflow_super_secret_jwt_key_csf402_project_2026

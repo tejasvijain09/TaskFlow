@@ -31,7 +31,8 @@ function AppContent() {
     if (!userString) return;
 
     const user = JSON.parse(userString);
-    const socket = io('http://localhost:5001');
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
+    const socket = io(socketUrl);
 
     socket.on('connect', () => {
       // Join user's personal room

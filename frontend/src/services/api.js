@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+// API base URL: defaults to local backend, or uses cloud URL in production
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+
 // Create an Axios instance with base URL pointing to Express backend
 const API = axios.create({
-  baseURL: 'http://localhost:5001/api'
+  baseURL: API_URL
 });
 
 // Request interceptor to automatically attach JWT token to every request
