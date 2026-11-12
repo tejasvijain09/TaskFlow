@@ -10,9 +10,9 @@ Developed as a semester project for **CSF402: Programming Node JS Applications**
 
 | Member Name | Registration No. | Module Assigned | Key Focus Areas |
 | :--- | :--- | :--- | :--- |
-| **Suraj Yadav** | 12326764 | **Module 1: Authentication & User Management** | User registration, login, bcrypt password hashing, JWT tokens, auth middleware, role authorization |
+| **Tejasvi** | 12315197 | **Module 1: Authentication & User Management** | User registration, login, bcrypt password hashing, JWT tokens, auth middleware, role authorization |
 | **Arpan Dey** | 12305886 | **Module 2: Task Management** | Task CRUD, status/priority tracking, server-side filtering, multi-field sorting, pagination |
-| **Tejasvi** | 12315197 | **Module 3: Dashboard Analytics & Integration** | MongoDB aggregation pipeline, Socket.IO real-time alerts, Swagger docs, admin panel, system integration |
+| **Suraj Yadav** | 12326764 | **Module 3: Dashboard Analytics & Integration** | MongoDB aggregation pipeline, Socket.IO real-time alerts, Swagger docs, admin panel, system integration |
 
 For in-depth module responsibility documentation, see [TEAM_DIVISION.md](TEAM_DIVISION.md) and [VIVA_PREPARATION.md](VIVA_PREPARATION.md).
 

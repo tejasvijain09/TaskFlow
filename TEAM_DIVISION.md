@@ -10,13 +10,13 @@
 
 | Team Member | Registration No. | Assigned Module | Key Scope & Deliverables |
 | :--- | :--- | :--- | :--- |
-| **Suraj Yadav** | **12326764** | **Module 1: Authentication & User Management** | User registration, login, bcrypt password hashing, JWT token generation & verification, auth middleware, and route security. |
+| **Tejasvi** | **12315197** | **Module 1: Authentication & User Management** | User registration, login, bcrypt password hashing, JWT token generation & verification, auth middleware, and route security. |
 | **Arpan Dey** | **12305886** | **Module 2: Task Management (CRUD, Filters, Pagination)** | Task schema with compound indexes, full task CRUD, status & priority toggles, multi-parameter filtering, dynamic sorting, and pagination. |
-| **Tejasvi** | **12315197** | **Module 3: Dashboard Analytics, Socket.IO & Integration** | MongoDB aggregation pipeline, real-time Socket.IO notifications, Swagger/OpenAPI docs, Admin control panel, seeder, and system integration. |
+| **Suraj Yadav** | **12326764** | **Module 3: Dashboard Analytics, Socket.IO & Integration** | MongoDB aggregation pipeline, real-time Socket.IO notifications, Swagger/OpenAPI docs, Admin control panel, seeder, and system integration. |
 
 ---
 
-## 📌 Module 1: Suraj Yadav (Reg No: 12326764)
+## 📌 Module 1: Tejasvi (Reg No: 12315197)
 ### Authentication and User Security
 
 ### 1. Scope & Core Responsibilities
@@ -92,7 +92,7 @@
 
 ---
 
-## 📌 Module 3: Tejasvi (Reg No: 12315197)
+## 📌 Module 3: Suraj Yadav (Reg No: 12326764)
 ### Dashboard Analytics, Socket.IO & System Integration
 
 ### 1. Scope & Core Responsibilities

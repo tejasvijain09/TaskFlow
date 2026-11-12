@@ -7,13 +7,13 @@
 ---
 
 ## 📋 Table of Contents
-1. [Section 1: Suraj Yadav — Authentication & User Management](#section-1-suraj-yadav-reg-no-12326764)
+1. [Section 1: Tejasvi — Authentication & User Management](#section-1-tejasvi-reg-no-12315197)
 2. [Section 2: Arpan Dey — Task Management (CRUD, Filters, Pagination)](#section-2-arpan-dey-reg-no-12305886)
-3. [Section 3: Tejasvi — Dashboard Analytics, Socket.IO & Integration](#section-3-tejasvi-reg-no-12315197)
+3. [Section 3: Suraj Yadav — Dashboard Analytics, Socket.IO & Integration](#section-3-suraj-yadav-reg-no-12326764)
 
 ---
 
-# SECTION 1: SURAJ YADAV (REG NO: 12326764)
+# SECTION 1: TEJASVI (REG NO: 12315197)
 ## Module 1: Authentication and User Security
 
 ### 1. What Your Module Does
@@ -110,9 +110,9 @@ In `Login.jsx` and `Register.jsx`, form submissions trigger `API.post('/auth/log
 **Q15: How can an Admin account be created?**  
 *Answer:* Through our secure seed script `seed.js` using `node seed.js`, which directly creates the administrator account with a hashed password in MongoDB.
 
-### 9. Practical Demonstration Sequence for Suraj
+### 9. Practical Demonstration Sequence for Tejasvi
 1. Open `/register` in browser. Try submitting empty form and mismatched passwords to show client validation.
-2. Register a new user e.g. `suraj.test@taskflow.com`.
+2. Register a new user e.g. `tejasvi.test@taskflow.com`.
 3. Open MongoDB Compass or terminal, show that the password is saved as a secure `$2a$10$...` hash.
 4. Log in and open Browser DevTools -> Application -> Local Storage. Point out `token` and `user`.
 5. Try navigating directly to `/admin` using the URL bar, and show how the route guard prevents access.
@@ -238,7 +238,7 @@ Your module is the operational core of TaskFlow. It allows authenticated users t
 
 ---
 
-# SECTION 3: TEJASVI (REG NO: 12315197)
+# SECTION 3: SURAJ YADAV (REG NO: 12326764)
 ## Module 3: Dashboard Analytics, Socket.IO & System Integration
 
 ### 1. What Your Module Does
@@ -361,7 +361,7 @@ Stage 2 is `$group: { _id: '$status', count: { $sum: 1 } }`, which groups tasks 
 **Q15: Why is `app.set('io', io)` used in `server.js`?**  
 *Answer:* It attaches the Socket.IO instance to the Express app. In controllers like `taskController.js`, we retrieve it via `req.app.get('io')` to emit notifications without circular file imports.
 
-### 9. Practical Demonstration Sequence for Tejasvi
+### 9. Practical Demonstration Sequence for Suraj
 1. Open `/dashboard` and point out the 4 statistic cards and recent tasks list generated via MongoDB aggregation.
 2. Open two browser tabs side by side logged in to the same user. On Tab 1, go to **My Tasks** and change a task status from "In Progress" to "Completed".
 3. Immediately point out the real-time floating notification toast appearing on Tab 2 via Socket.IO without refreshing the page!
