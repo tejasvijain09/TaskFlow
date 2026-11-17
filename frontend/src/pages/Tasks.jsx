@@ -19,6 +19,11 @@ const Tasks = () => {
   const [sortBy, setSortBy] = useState('priority');
   const [sortOrder, setSortOrder] = useState('desc');
 
+  // AI Natural Language Quick Add states
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiNotice, setAiNotice] = useState('');
+
   // Modal states for Create / Edit
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null); // null when adding, task object when editing
@@ -74,6 +79,7 @@ const Tasks = () => {
       dueDate: ''
     });
     setFormError('');
+    setAiNotice('');
     setIsModalOpen(true);
   };
 
@@ -88,6 +94,7 @@ const Tasks = () => {
       dueDate: task.dueDate ? task.dueDate.split('T')[0] : ''
     });
     setFormError('');
+    setAiNotice('');
     setIsModalOpen(true);
   };
 
@@ -95,6 +102,39 @@ const Tasks = () => {
     setIsModalOpen(false);
     setEditingTask(null);
     setFormError('');
+    setAiNotice('');
+  };
+
+  // AI Natural Language Quick Add parser
+  const handleAiQuickAdd = async (inputQuery) => {
+    const promptToParse = inputQuery || aiPrompt;
+    if (!promptToParse || !promptToParse.trim()) return;
+
+    try {
+      setAiLoading(true);
+      setFormError('');
+      const res = await API.post('/ai/parse-task', { input: promptToParse.trim() });
+      if (res.data && res.data.success) {
+        const { title, description, priority, dueDate, status } = res.data.task;
+        setEditingTask(null);
+        setFormData({
+          title: title || '',
+          description: description || '',
+          status: status || 'Pending',
+          priority: priority || 'Medium',
+          dueDate: dueDate ? dueDate.split('T')[0] : ''
+        });
+        setAiNotice(`✨ Auto-parsed via ${res.data.source}. Review fields and click "Create Task" to confirm.`);
+        setIsModalOpen(true);
+        setAiPrompt('');
+      }
+    } catch (err) {
+      console.error('AI quick add parse error:', err);
+      setFeedbackMessage('Could not parse task with AI. Please try again.');
+      setTimeout(() => setFeedbackMessage(''), 4000);
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   // Handle Create or Update task submit
@@ -206,6 +246,78 @@ const Tasks = () => {
               {feedbackMessage}
             </div>
           )}
+
+          {/* AI Natural Language Quick Add Card */}
+          <div className="ai-quick-add-card">
+            <div className="ai-header">
+              <div className="ai-header-title">
+                <span>✨ AI Natural Language Task Creator</span>
+                <span className="ai-badge">Smart NLP</span>
+              </div>
+              <small style={{ color: '#7c3aed', fontSize: '12px', fontWeight: 500 }}>
+                Type naturally — auto-extracts title, priority & deadline
+              </small>
+            </div>
+
+            <div className="ai-input-row">
+              <input
+                type="text"
+                className="ai-input"
+                placeholder='e.g. "Finish viva report by tomorrow 4pm with high priority"'
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAiQuickAdd();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="btn-ai"
+                onClick={() => handleAiQuickAdd()}
+                disabled={aiLoading || !aiPrompt.trim()}
+              >
+                {aiLoading ? '⚡ Parsing...' : '✨ Magic Fill'}
+              </button>
+            </div>
+
+            {/* Quick Demo Prompt Chips */}
+            <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ fontSize: '11px', color: '#6d28d9', fontWeight: 600 }}>Try sample:</span>
+              <button
+                type="button"
+                onClick={() => handleAiQuickAdd('Finish viva report by tomorrow 4pm with high priority')}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #ddd6fe',
+                  color: '#6d28d9',
+                  padding: '3px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '11px',
+                  cursor: 'pointer'
+                }}
+              >
+                💡 Finish viva report by tomorrow 4pm high priority
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAiQuickAdd('Review MongoDB aggregation pipeline by Friday urgent')}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #ddd6fe',
+                  color: '#6d28d9',
+                  padding: '3px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '11px',
+                  cursor: 'pointer'
+                }}
+              >
+                💡 Review MongoDB pipeline by Friday urgent
+              </button>
+            </div>
+          </div>
 
           {/* Filters, Sorting, and Search Toolbar */}
           <div className="toolbar-card">
@@ -347,6 +459,11 @@ const Tasks = () => {
             <form onSubmit={handleFormSubmit}>
               <div className="modal-body">
                 {formError && <div className="alert-error">{formError}</div>}
+                {aiNotice && (
+                  <div className="ai-modal-notice">
+                    <span>{aiNotice}</span>
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label htmlFor="modal-title">Task Title *</label>
