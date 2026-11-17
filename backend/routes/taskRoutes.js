@@ -43,7 +43,7 @@ router.use(protect);
  *                 example: Draft the documentation and viva notes
  *               status:
  *                 type: string
- *                 enum: [Pending, In Progress, Completed]
+ *                 enum: [Pending, In Progress, Completed, Overdue]
  *                 example: Pending
  *               priority:
  *                 type: string
@@ -68,7 +68,7 @@ router.use(protect);
  *         name: status
  *         schema:
  *           type: string
- *           enum: [Pending, In Progress, Completed]
+ *           enum: [Pending, In Progress, Completed, Overdue]
  *         description: Filter tasks by status
  *       - in: query
  *         name: priority
@@ -80,8 +80,8 @@ router.use(protect);
  *         name: sortBy
  *         schema:
  *           type: string
- *           default: createdAt
- *         description: Field to sort by (createdAt, dueDate)
+ *           default: priority
+ *         description: Field to sort by (priority, createdAt, dueDate, title)
  *       - in: query
  *         name: order
  *         schema:
@@ -148,7 +148,7 @@ router.route('/')
  *                 type: string
  *               status:
  *                 type: string
- *                 enum: [Pending, In Progress, Completed]
+ *                 enum: [Pending, In Progress, Completed, Overdue]
  *               priority:
  *                 type: string
  *                 enum: [Low, Medium, High]

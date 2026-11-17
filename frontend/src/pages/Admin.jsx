@@ -172,6 +172,8 @@ const Admin = () => {
                                 ? 'badge-completed'
                                 : task.status === 'In Progress'
                                 ? 'badge-in-progress'
+                                : task.status === 'Overdue'
+                                ? 'badge-overdue'
                                 : 'badge-pending'
                             }`}
                           >

@@ -11,6 +11,7 @@ const Dashboard = () => {
     pendingTasks: 0,
     inProgressTasks: 0,
     completedTasks: 0,
+    overdueTasks: 0,
     recentTasks: []
   });
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ const Dashboard = () => {
 
           {error && <div className="alert-error">{error}</div>}
 
-          {/* Four Statistic Cards */}
+          {/* Statistic Cards */}
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-info">
@@ -98,12 +99,25 @@ const Dashboard = () => {
               </div>
               <div className="stat-icon icon-completed">✅</div>
             </div>
+
+            <div className="stat-card">
+              <div className="stat-info">
+                <h3>Overdue</h3>
+                <div className="stat-number" style={{ color: '#b91c1c' }}>
+                  {stats.overdueTasks || 0}
+                </div>
+              </div>
+              <div className="stat-icon icon-overdue">⚠️</div>
+            </div>
           </div>
 
-          {/* Recent Tasks Section */}
+          {/* Priority Tasks Section */}
           <div className="table-card">
             <div className="table-header">
-              <h3>Recently Created Tasks</h3>
+              <div>
+                <h3>Priority Tasks</h3>
+                <small style={{ color: '#64748b' }}>High priority pending and overdue tasks are prioritized</small>
+              </div>
               <Link to="/tasks" className="btn btn-primary btn-sm">
                 Manage All Tasks →
               </Link>
@@ -111,7 +125,7 @@ const Dashboard = () => {
 
             {loading ? (
               <div style={{ padding: '32px', textAlign: 'center', color: '#64748b' }}>
-                Loading recent tasks...
+                Loading priority tasks...
               </div>
             ) : stats.recentTasks.length === 0 ? (
               <div className="empty-state">
@@ -142,6 +156,8 @@ const Dashboard = () => {
                               ? 'badge-completed'
                               : task.status === 'In Progress'
                               ? 'badge-in-progress'
+                              : task.status === 'Overdue'
+                              ? 'badge-overdue'
                               : 'badge-pending'
                           }`}
                         >

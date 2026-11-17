@@ -21,6 +21,8 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
         return 'badge-in-progress';
       case 'Completed':
         return 'badge-completed';
+      case 'Overdue':
+        return 'badge-overdue';
       default:
         return 'badge-pending';
     }
@@ -65,7 +67,9 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
           </div>
           <div>
             <strong>Due: </strong>
-            <span>{formatDate(task.dueDate)}</span>
+            <span style={{ color: task.status === 'Overdue' ? '#b91c1c' : 'inherit', fontWeight: task.status === 'Overdue' ? 600 : 'normal' }}>
+              {formatDate(task.dueDate)} {task.status === 'Overdue' && '⚠️'}
+            </span>
           </div>
         </div>
 
@@ -79,6 +83,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
             <option value="Pending">Pending</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
+            <option value="Overdue">Overdue</option>
           </select>
 
           <div className="task-buttons">

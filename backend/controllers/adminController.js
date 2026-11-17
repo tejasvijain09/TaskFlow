@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Task = require('../models/Task');
 const mongoose = require('mongoose');
+const { autoUpdateOverdueTasks } = require('../utils/taskUtils');
 
 // @desc    Get all registered users (Admin only)
 // @route   GET /api/admin/users
@@ -21,6 +22,9 @@ const getAllUsers = async (req, res) => {
 // @access  Private/Admin
 const getAllTasks = async (req, res) => {
   try {
+    // Auto-update overdue tasks across the whole system
+    await autoUpdateOverdueTasks(null, req.app.get('io'));
+
     // Populate user info (name, email)
     const tasks = await Task.find()
       .populate('user', 'name email')

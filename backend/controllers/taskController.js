@@ -1,5 +1,6 @@
 const Task = require('../models/Task');
 const mongoose = require('mongoose');
+const { autoUpdateOverdueTasks, getPriorityRankExpression } = require('../utils/taskUtils');
 
 // @desc    Create a new task
 // @route   POST /api/tasks
@@ -13,11 +14,17 @@ const createTask = async (req, res) => {
       return res.status(400).json({ message: 'Task title is required' });
     }
 
+    // Determine initial status: if deadline is already in the past and not completed, mark Overdue
+    let initialStatus = status || 'Pending';
+    if (dueDate && new Date(dueDate) < new Date() && initialStatus !== 'Completed') {
+      initialStatus = 'Overdue';
+    }
+
     // Create the task associated with logged-in user
     const task = await Task.create({
       title: title.trim(),
       description: description ? description.trim() : '',
-      status: status || 'Pending',
+      status: initialStatus,
       priority: priority || 'Medium',
       dueDate: dueDate || null,
       user: req.user._id
@@ -35,7 +42,10 @@ const createTask = async (req, res) => {
 // @access  Private
 const getTasks = async (req, res) => {
   try {
-    const { status, priority, sortBy = 'createdAt', order = 'desc', page = 1, limit = 5 } = req.query;
+    // 1. Auto-update any tasks whose deadline has passed to 'Overdue'
+    await autoUpdateOverdueTasks(req.user._id, req.app.get('io'));
+
+    const { status, priority, sortBy = 'priority', order = 'desc', page = 1, limit = 6 } = req.query;
 
     // Base query: filter by current user's ID
     const query = { user: req.user._id };
@@ -50,28 +60,42 @@ const getTasks = async (req, res) => {
       query.priority = priority;
     }
 
-    // Setup safe pagination numbers (avoid negative numbers)
+    // Setup safe pagination numbers
     const pageNum = Math.max(1, parseInt(page, 10) || 1);
-    const limitNum = Math.max(1, parseInt(limit, 10) || 5);
+    const limitNum = Math.max(1, parseInt(limit, 10) || 6);
     const skip = (pageNum - 1) * limitNum;
-
-    // Allowed sort fields to prevent unexpected query behavior
-    const allowedSortFields = ['createdAt', 'dueDate', 'title', 'priority', 'status'];
-    const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
-
-    // Setup sorting: 'asc' = 1, 'desc' = -1
-    const sortOrder = order === 'asc' ? 1 : -1;
-    const sortCriteria = { [sortField]: sortOrder };
 
     // Count total tasks matching query for pagination calculation
     const totalTasks = await Task.countDocuments(query);
     const totalPages = Math.ceil(totalTasks / limitNum) || 1;
 
-    // Fetch paginated tasks from MongoDB
-    const tasks = await Task.find(query)
-      .sort(sortCriteria)
-      .skip(skip)
-      .limit(limitNum);
+    let tasks;
+
+    // When sorting by priority (or default):
+    // Show High priority Pending/Overdue first, then Medium, Low, with Completed last
+    if (sortBy === 'priority') {
+      tasks = await Task.aggregate([
+        { $match: query },
+        {
+          $addFields: {
+            rankWeight: getPriorityRankExpression()
+          }
+        },
+        { $sort: { rankWeight: 1, dueDate: 1, createdAt: -1 } },
+        { $skip: skip },
+        { $limit: limitNum }
+      ]);
+    } else {
+      const allowedSortFields = ['createdAt', 'dueDate', 'title', 'status'];
+      const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+      const sortOrder = order === 'asc' ? 1 : -1;
+      const sortCriteria = { [sortField]: sortOrder };
+
+      tasks = await Task.find(query)
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limitNum);
+    }
 
     res.json({
       tasks,
@@ -104,6 +128,12 @@ const getTaskById = async (req, res) => {
     // Check ownership: regular user can only view their own task; Admin can view any
     if (task.user.toString() !== req.user._id.toString() && req.user.role !== 'Admin') {
       return res.status(403).json({ message: 'Not authorized to view this task' });
+    }
+
+    // Auto-update to Overdue if deadline passed and not completed
+    if (task.dueDate && new Date(task.dueDate) < new Date() && !['Completed', 'Overdue'].includes(task.status)) {
+      task.status = 'Overdue';
+      await task.save();
     }
 
     res.json(task);
@@ -140,14 +170,29 @@ const updateTask = async (req, res) => {
     // Update fields if provided in request
     if (title !== undefined) task.title = title.trim();
     if (description !== undefined) task.description = description.trim();
-    if (status !== undefined) task.status = status;
     if (priority !== undefined) task.priority = priority;
     if (dueDate !== undefined) task.dueDate = dueDate ? new Date(dueDate) : null;
+
+    if (status !== undefined) {
+      task.status = status;
+    }
+
+    // Automatic overdue detection:
+    // If task is not marked Completed:
+    // 1. If dueDate is in the past, status automatically becomes Overdue
+    // 2. If dueDate is extended into the future and previous status was Overdue, revert to Pending (or provided status)
+    if (task.status !== 'Completed') {
+      if (task.dueDate && new Date(task.dueDate) < new Date()) {
+        task.status = 'Overdue';
+      } else if (task.status === 'Overdue' && task.dueDate && new Date(task.dueDate) >= new Date()) {
+        task.status = status && status !== 'Overdue' ? status : 'Pending';
+      }
+    }
 
     const updatedTask = await task.save();
 
     // If status was changed, emit real-time Socket.IO notification to user
-    if (status && status !== oldStatus) {
+    if (updatedTask.status !== oldStatus) {
       const io = req.app.get('io');
       if (io) {
         // Emit to user's personal room (named after their userId)
@@ -155,8 +200,8 @@ const updateTask = async (req, res) => {
           taskId: task._id,
           title: task.title,
           oldStatus,
-          newStatus: task.status,
-          message: `Task "${task.title}" status changed to ${task.status}`
+          newStatus: updatedTask.status,
+          message: `Task "${task.title}" status changed to ${updatedTask.status}`
         });
       }
     }

@@ -92,7 +92,24 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5001;
 
+// Periodically check and auto-update overdue tasks
+const { autoUpdateOverdueTasks } = require('./utils/taskUtils');
+
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`TaskFlow Server running on port ${PORT}`);
   console.log(`Swagger Docs available at http://localhost:${PORT}/api-docs`);
+
+  // Initial overdue check after startup
+  setTimeout(() => {
+    autoUpdateOverdueTasks(null, io).catch((err) =>
+      console.error('Initial overdue check error:', err.message)
+    );
+  }, 3000);
+
+  // Periodic overdue check every 60 seconds
+  setInterval(() => {
+    autoUpdateOverdueTasks(null, io).catch((err) =>
+      console.error('Periodic overdue check error:', err.message)
+    );
+  }, 60 * 1000);
 });

@@ -16,7 +16,7 @@ const Tasks = () => {
   // Filter and sort states
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
-  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortBy, setSortBy] = useState('priority');
   const [sortOrder, setSortOrder] = useState('desc');
 
   // Modal states for Create / Edit
@@ -222,6 +222,7 @@ const Tasks = () => {
                   <option value="Pending">Pending</option>
                   <option value="In Progress">In Progress</option>
                   <option value="Completed">Completed</option>
+                  <option value="Overdue">Overdue</option>
                 </select>
               </div>
 
@@ -250,6 +251,7 @@ const Tasks = () => {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
+                  <option value="priority">Priority (High Priority First)</option>
                   <option value="createdAt">Date Created</option>
                   <option value="dueDate">Due Date</option>
                   <option value="title">Title (A-Z)</option>
@@ -382,6 +384,7 @@ const Tasks = () => {
                       <option value="Pending">Pending</option>
                       <option value="In Progress">In Progress</option>
                       <option value="Completed">Completed</option>
+                      <option value="Overdue">Overdue</option>
                     </select>
                   </div>
 
